@@ -1,9 +1,13 @@
 package com.example.demo2.controller;
 
+import com.example.demo2.dto.OrganizationRequestDto;
+import com.example.demo2.dto.OrganizationResponseDto;
 import com.example.demo2.entity.Organization;
 import com.example.demo2.service.OrgnaizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/organization")
@@ -16,14 +20,14 @@ public class OrganizationController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Organization>creatorganization(@RequestBody Organization organization){
+    public ResponseEntity<OrganizationResponseDto>creatorganization(@RequestBody OrganizationRequestDto organizationRequestDto){
 
-        Organization savedOrganization = orgnaizationService.saveOrganization(organization);
+        OrganizationResponseDto savedOrganization = orgnaizationService.saveOrganization(organizationRequestDto);
         return ResponseEntity.ok(savedOrganization);
     }
 
     @GetMapping("/getOrganizationById/{id}")
-    public ResponseEntity<Organization> getOrganizationById(@PathVariable Long id)
+    public ResponseEntity<OrganizationResponseDto> getOrganizationById(@PathVariable Long id)
     {
         return orgnaizationService.getOrganizationById(id)
                 .map(ResponseEntity::ok)
@@ -31,8 +35,8 @@ public class OrganizationController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Organization> updateOrganization(@PathVariable Long id,@RequestBody Organization organizationDetails){
-        return orgnaizationService.updateOrganization(id,organizationDetails)
+    public ResponseEntity<OrganizationResponseDto> updateOrganization(@PathVariable Long id,@RequestBody OrganizationRequestDto organizationRequestDto){
+        return orgnaizationService.updateOrganization(id,organizationRequestDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
